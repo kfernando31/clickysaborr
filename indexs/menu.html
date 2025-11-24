@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Menú - Click y Sabor</title>
+  <link rel="stylesheet" href="../css/menu.css">
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" class="back">← Volver</a>
+  <h1 class="logo">Click y Sabor</h1>
+</header>
+
+<nav>
+  <a href="#Hamburguesas">Hamburguesas</a>
+  <a href="#Papas">Papas</a>
+  <a href="#Salchipapas">Salchipapas</a>
+  <a href="#Bebidas">Bebidas</a>
+</nav>
+
+<!-- 🍔 HAMBURGUESAS -->
+<section id="Hamburguesas">
+  <h1><b>Hamburguesas</b></h1>
+
+  <div class="fila">
+
+    <!-- PRODUCTO 1 -->
+    <div class="producto">
+      <img src="https://images.unsplash.com/photo-1550547660-d9450f859349">
+      <h2>Hamburguesa Clásica</h2>
+      <p class="precio">$4.50</p>
+
+      <textarea placeholder="Comentario: sin cebolla, más queso..."></textarea>
+
+      <button class="carrito" onclick="agregarCarrito(this)">Agregar al carrito</button>
+    </div>
+
+    <!-- PRODUCTO 2 -->
+    <div class="producto">
+      <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd">
+      <h2>Hamburguesa Doble</h2>
+      <p class="precio">$6.00</p>
+
+      <textarea placeholder="Comentario: sin salsa, cocción media..."></textarea>
+
+      <button class="carrito" onclick="agregarCarrito(this)">Agregar al carrito</button>
+    </div>
+
+  </div>
+
+</section>
+
+<br>
+
+<!-- PAPAS -->
+<section id="Papas">
+  <h1><b>Papas Fritas</b></h1>
+
+  <div class="fila">
+
+    <div class="producto">
+      <img src="https://www.cucinare.tv/wp-content/uploads/2024/08/papasfritas1.jpg">
+      <h2>Papas Fritas</h2>
+      <p class="precio">$1.50</p>
+
+      <textarea placeholder="Comentario: extra sal, más salsa..."></textarea>
+
+      <button class="carrito" onclick="agregarCarrito(this)">Agregar al carrito</button>
+    </div>
+
+    <div class="producto">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq03vs5Oh5X0CfC8dR03YV7CoEK3d3dGBfCA&s">
+      <h2>Papas Especiales</h2>
+      <p class="precio">$2.50</p>
+
+      <textarea placeholder="Comentario: queso extra, sin sal..."></textarea>
+
+      <button class="carrito" onclick="agregarCarrito(this)">Agregar al carrito</button>
+    </div>
+
+  </div>
+</section>
+
+<br>
+
+<!-- SALCHIPAPAS -->
+<section id="Salchipapas">
+  <h1><b>Salchipapas</b></h1>
+
+  <div class="fila">
+
+    <div class="producto">
+      <img src="https://imag.bonviveur.com/emplatado-final-de-las-salchipapas.jpg">
+      <h2>Salchipapa Clásica</h2>
+      <p class="precio">$3.00</p>
+
+      <textarea placeholder="Comentario: más salsa rosada..."></textarea>
+
+      <button class="carrito" onclick="agregarCarrito(this)">Agregar al carrito</button>
+    </div>
+
+    <div class="producto">
+      <img src="https://www.infobae.com/new-resizer/ztHKsjeALWcMhUwloZPRGOvYe9c=/arc-anglerfish-arc2-prod-infobae/public/KNF4EIDGQVA4VPXKCFXWLFS4OI.jpg">
+      <h2>Salchipapa Especial</h2>
+      <p class="precio">$4.50</p>
+
+      <textarea placeholder="Comentario: + queso, + huevo..."></textarea>
+
+      <button class="carrito" onclick="agregarCarrito(this)">Agregar al carrito</button>
+    </div>
+
+  </div>
+</section>
+
+<br>
+
+<!-- BEBIDAS -->
+<section id="Bebidas">
+  <h1><b>Bebidas</b></h1>
+
+  <div class="fila">
+
+    <div class="producto">
+      <img src="https://media.falabella.com/tottusPE/40707464_1/w=1500,h=1500,fit=pad">
+      <h2>Coca Cola</h2>
+      <p class="precio">$1.50</p>
+
+      <textarea placeholder="Comentario: fría / sin hielo"></textarea>
+
+      <button class="carrito" onclick="agregarCarrito(this)">Agregar al carrito</button>
+    </div>
+
+    <div class="producto">
+      <img src="https://www.fybeca.com/dw/image/v2/BDPM_PRD/on/demandware.static/-/Sites-masterCatalog_FybecaEcuador/default/dw079c58fa/images/large/100081331_1.jpg?sw=1000&sh=1000">
+      <h2>Agua</h2>
+      <p class="precio">$0.90</p>
+
+      <textarea placeholder="Comentario: fría / natural"></textarea>
+
+      <button class="carrito" onclick="agregarCarrito(this)">Agregar al carrito</button>
+    </div>
+
+  </div>
+</section>
+
+<br><br>
+
+<a href="pedidos.html" class="boton">Hacer pedido</a>
+
+<br><br>
+
+<script>
+function agregarCarrito(boton) {
+  // Encontrar el producto
+  const card = boton.closest('.producto');
+
+  // Nombre
+  const nombre = card.querySelector('h2').textContent.trim();
+
+  // Precio
+  const precioTexto = card.querySelector('.precio').textContent.replace('$','').trim();
+  const precio = parseFloat(precioTexto);
+
+  // Comentario
+  const comentario = card.querySelector('textarea').value.trim();
+
+  // Obtener carrito actual
+  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+  // Agregar producto al carrito
+  carrito.push({
+    nombre: nombre,
+    precio: precio,
+    comentario: comentario
+  });
+
+  // Guardar
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+
+  alert("Producto agregado, con comentario incluido");
+}
+</script>
+
+<footer>
+  <p>© 2025 Click y Sabor.</p>
+</footer>
+
+</body>
+</html>

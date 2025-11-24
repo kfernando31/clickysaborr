@@ -1,0 +1,179 @@
+/* GENERAL */
+body {
+  margin: 0;
+  background:  #f3ede5;
+  font-family: Arial, sans-serif;
+}
+
+/* HEADER */
+header {
+  background: #808080;
+  padding: 20px;
+  text-align: center;
+  color: white;
+  position: relative;
+}
+
+header a {
+  color: white;
+  text-decoration: none;
+  position: absolute;
+  left: 20px;
+  top: 25px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.logo {
+  height: 65px;
+  object-fit: contain;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.contacto-container {
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* CUADRO IZQUIERDO */
+.info-contacto {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  width: 480px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.info-contacto h1,
+.info-contacto h2 {
+  color: #e63946;
+  margin-bottom: 10px;
+}
+
+.telefono,
+.direccion {
+  font-size: 17px;
+}
+
+/* CUADRO DE HORARIOS */
+.horarios {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  width: 420px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  margin: auto;
+}
+
+.horario-box {
+  margin-bottom: 25px;
+}
+
+.horario-box h2 {
+  color: #e63946;
+  margin-bottom: 10px;
+}
+
+/* FILAS */
+.fila {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+}
+
+/* FORMULARIO */
+form label {
+  display: block;
+  margin: 10px 0 5px;
+  font-size: 17px;
+}
+
+form input,
+form textarea {
+  width: 100%;
+  padding: 5px;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+  font-size: 16px;
+}
+
+form textarea {
+  resize: none;
+}
+
+/* BOTÓN ENVIAR */
+button {
+  background: #e63946;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background: #c72b36;
+}
+
+/* BOTÓN GMAIL */
+.boton-gmail {
+  background: #006aff;
+  padding: 10px 20px;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.boton-gmail:hover {
+  background: #0050d1;
+}
+
+/* WHATSAPP FLOTANTE */
+.whatsapp-float {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: #25d366;
+  color: white;
+  font-size: 32px;
+  padding: 15px;
+  border-radius: 50%;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+/* BOTÓN VOLVER */
+.boton {
+  display: block;
+  margin: 25px auto;
+  width: 220px;
+  padding: 14px;
+  background: #e63946;
+  color: white;
+  font-size: 18px;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.boton:hover {
+  background: #c72b36;
+}
+
+/* FOOTER */
+footer {
+  background: #111;
+  color: white;
+  text-align: center;
+  padding: 18px;
+  margin-top: 40px;
+  font-size: 16px;
+}

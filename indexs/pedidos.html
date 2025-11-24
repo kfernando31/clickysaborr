@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pedido - Click y Sabor</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+      <link rel="stylesheet" href="../css/pepidos.css">
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="back">← Volver</a>
+        <h1 class="logo">Click y Sabor</h1>
+    </header>
+
+    <section class="contenedor">
+
+        <h1 style="text-align:center;margin-top:8px">Resumen de tu Pedido</h1>
+
+        <div class="tarjeta" id="carritoCard">
+            <h2>Carrito</h2>
+            <div id="listaCarrito" class="small"></div>
+            <h3 id="subtotal" style="text-align:center;margin-top:12px"></h3>
+        </div>
+
+        <div class="tarjeta">
+            <h2>Datos del Pedido</h2>
+
+            <label>Nombre:</label>
+            <input type="text" id="nombre" placeholder="Tu nombre">
+<br><br>
+            <label>Teléfono:</label>
+            <input type="text" id="telefono" placeholder="0999999999">
+<br><br>
+            <label>Correo Electronico:</label>
+            <textarea id="comentario" placeholder="Escribe aquí..."></textarea>
+
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+                <div style="flex:1">
+                    <label>Método de pago:</label>
+                    <select id="pago">
+                        <option value="Efectivo">Efectivo</option>
+                        <option value="Tarjeta">Tarjeta</option>
+                        <option value="Transferencia">Transferencia</option>
+                    </select>
+                </div>
+                <div style="flex:1">
+                    <label>Forma de entrega:</label>
+                    <select id="entrega">
+                        <option value="Para llevar">Para llevar</option>
+                        <option value="Comer aquí">Comer aquí</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="tarjeta">
+            <h2>Factura & Turno</h2>
+            <div id="factura" class="small" style="margin-bottom:12px"></div>
+            <div class="meta" style="margin-bottom:12px">
+                <div class="info"><strong>Turno:</strong> <span id="turnoNumber">—</span></div>
+                <div class="info"><strong>Hora estimada:</strong> <span id="turnoHora">—</span></div>
+            </div>
+
+
+            <div class="boton-fila" style="text-align:center;margin-top:12px">
+                <button class="boton" id="generarFacturaBtn"> Factura y Salir</button>
+            </div>
+        </div>
+
+    </section>
+
+    <footer style="text-align:center;padding:16px;background:#111;color:#fff;margin-top:20px">
+        <p>© 2025 Click y Sabor.</p>
+    </footer>
+
+    <script>
+        function cargarCarrito() {
+            const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+            const lista = document.getElementById("listaCarrito");
+            let subtotal = 0;
+            lista.innerHTML = '';
+            if (carrito.length === 0) {
+                lista.innerHTML = '<p>No hay productos en el carrito.</p>';
+            } else {
+                carrito.forEach((p, i) => {
+                    const comentario = p.comentario ? ` — "${p.comentario}"` : '';
+                    lista.innerHTML += `<p>${i + 1}. ${p.nombre} — $${Number(p.precio).toFixed(2)}${comentario}</p>`;
+                    subtotal += Number(p.precio);
+                });
+            }
+            document.getElementById("subtotal").textContent = 'Subtotal: $' + subtotal.toFixed(2);
+        }
+
+        function escapeHtml(text) {
+            return String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        function generarFacturaYSalir() {
+            const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+            if (carrito.length === 0) { alert("El carrito está vacío."); return; }
+
+            const nombre = document.getElementById("nombre").value.trim();
+            const telefono = document.getElementById("telefono").value.trim();
+            const comentarioGeneral = document.getElementById("comentario").value.trim();
+            const pago = document.getElementById("pago").value;
+            const entrega = document.getElementById("entrega").value;
+            if (!nombre || !telefono) { alert("Completa nombre y teléfono."); return; }
+
+            let subtotal = 0;
+            let detalleText = '';
+            carrito.forEach((p) => {
+                subtotal += Number(p.precio);
+                detalleText += `${p.nombre} - $${Number(p.precio).toFixed(2)}${p.comentario ? ' (' + p.comentario + ')' : ''}\n`;
+            });
+            const iva = subtotal * 0.12;
+            const total = subtotal + iva;
+
+            let turnoCounter = parseInt(localStorage.getItem('turnoCounter') || '0', 10);
+            turnoCounter += 1;
+            localStorage.setItem('turnoCounter', String(turnoCounter));
+            const turno = turnoCounter;
+
+            const baseMinutos = 15;
+            const esperaPorTurno = 5;
+            const minutosEstimados = baseMinutos + (turno - 1) * esperaPorTurno;
+            const fechaEstimada = new Date(Date.now() + minutosEstimados * 60000);
+            const horaEstimada = fechaEstimada.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            document.getElementById("factura").innerHTML = `
+<p><strong>Cliente:</strong> ${escapeHtml(nombre)}</p>
+<p><strong>Teléfono:</strong> ${escapeHtml(telefono)}</p>
+<p><strong>Método de pago:</strong> ${escapeHtml(pago)}</p>
+<p><strong>Entrega:</strong> ${escapeHtml(entrega)}</p>
+<p><strong>Comentario general:</strong> ${escapeHtml(comentarioGeneral || '—')}</p>
+<hr>
+<strong>Detalle:</strong>
+<div>${carrito.map((p, i) => `<div>${i + 1}. ${escapeHtml(p.nombre)} - $${Number(p.precio).toFixed(2)}${p.comentario ? ' — ' + escapeHtml(p.comentario) : ''}</div>`).join('')}</div>
+<hr>
+<p>Subtotal: $${subtotal.toFixed(2)}</p>
+<p>IVA (12%): $${iva.toFixed(2)}</p>
+<h3>Total: $${total.toFixed(2)}</h3>
+`;
+
+            document.getElementById("turnoNumber").textContent = turno;
+            document.getElementById("turnoHora").textContent = horaEstimada;
+
+            const qrText = `Click y Sabor - Pedido
+Cliente: ${nombre}
+Tel: ${telefono}
+Turno: ${turno}
+Entrega: ${entrega}
+Total: $${total.toFixed(2)}
+Resumen:
+${detalleText}`;
+
+            // Guardar último pedido
+            localStorage.setItem('ultimoPedido', JSON.stringify({
+                turno, nombre, telefono, pago, entrega, comentarioGeneral, detalle: carrito, subtotal, iva, total, horaEstimada, fecha: new Date().toISOString()
+            }));
+
+            // Alert y redirección tras 5 segundos para permitir descarga QR
+            alert('Factura generada. Tu turno es #' + turno + ' — Hora estimada: ' + horaEstimada + '\nDescarga tu QR si deseas.');
+            setTimeout(() => {
+                localStorage.removeItem("carrito");
+                window.location.href = "index.html";
+            }, 9000);
+        }
+
+        document.getElementById("generarFacturaBtn").addEventListener("click", generarFacturaYSalir);
+        cargarCarrito();
+    </script>
+
+</body>
+
+</html>
